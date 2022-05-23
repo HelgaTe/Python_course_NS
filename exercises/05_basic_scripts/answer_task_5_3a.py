@@ -26,13 +26,12 @@ trunk_template = [
     "switchport trunk allowed vlan {}",
 ]
 
-mode=input('Enter interface mode (access/trunk) : ')
-intf=input('Enter interface (type, number)  : ')
-vlan_questions={'access' : 'Введите номер VLAN:','trunk': 'Введите разрешенные VLANы:'}
-vlan=input(vlan_questions[mode])
-
 template = {"access": access_template, "trunk": trunk_template}
-# конвертировать в словарь, вывод осуществлять через вызов к ключу словаря
+question = {"access": "Введите номер VLAN: ", "trunk": "Введите разрешенные VLANы: "}
 
-print(f'interface {intf}')
-print("\n".join(template[mode]).format(vlan))
+mode = input("Введите режим работы интерфейса (access/trunk): ")
+interface = input("Введите тип и номер интерфейса: ")
+vlans = input(question[mode])
+
+print("interface {}".format(interface))
+print("\n".join(template[mode]).format(vlans))
