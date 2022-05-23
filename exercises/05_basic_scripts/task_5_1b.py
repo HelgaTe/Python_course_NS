@@ -50,3 +50,12 @@ london_co = {
         "routing": True,
     },
 }
+
+
+device=input('Enter device name : ')
+param=list(london_co[device].keys()) # записать ключи словаря в список
+param=', '.join(param) # преобразовать список в строку 
+param_info=input(f'Enter parametr ({param}):')
+result=london_co[device][param_info]
+print(result)
+

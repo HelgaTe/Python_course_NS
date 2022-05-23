@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Задание 4.7
+Задание 4.2
 
-Преобразовать MAC-адрес в строке mac в двоичную строку такого вида:
-'101010101010101010111011101110111100110011001100'
-
+Преобразовать строку в переменной mac из формата XXXX:XXXX:XXXX
+в формат XXXX.XXXX.XXXX
 Полученную новую строку вывести на стандартный поток вывода (stdout) с помощью print.
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
@@ -16,24 +15,6 @@
 """
 
 mac = "AAAA:BBBB:CCCC"
-mac=mac.split(':')
 
-mac1=mac[0]
-mac1=int(mac1,16)
-mac1=bin(mac1)
-mac1=mac1[2::]
-
-mac2=mac[1]
-mac2=int(mac2,16)
-mac2=bin(mac2)
-mac2=mac2[2::]
-
-mac3=mac[2]
-mac3=int(mac3,16)
-mac3=bin(mac3)
-mac3=mac3[2::]
-
-result=mac1+mac2+mac3
-print(result)
-
-
+new_mac = mac.replace(":", ".")
+print(new_mac)

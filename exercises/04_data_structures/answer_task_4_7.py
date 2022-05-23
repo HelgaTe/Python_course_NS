@@ -16,24 +16,6 @@
 """
 
 mac = "AAAA:BBBB:CCCC"
-mac=mac.split(':')
 
-mac1=mac[0]
-mac1=int(mac1,16)
-mac1=bin(mac1)
-mac1=mac1[2::]
-
-mac2=mac[1]
-mac2=int(mac2,16)
-mac2=bin(mac2)
-mac2=mac2[2::]
-
-mac3=mac[2]
-mac3=int(mac3,16)
-mac3=bin(mac3)
-mac3=mac3[2::]
-
-result=mac1+mac2+mac3
-print(result)
-
-
+bin_mac = "{:b}".format(int(mac.replace(":", ""), 16))
+print(bin_mac)

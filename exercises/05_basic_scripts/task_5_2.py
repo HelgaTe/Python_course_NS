@@ -30,3 +30,42 @@ Out[1]: '11111111111111111111111111110000'
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+ip=input('Enter IP address : ')
+network,mask=ip.split('/')
+
+n1=int(network.split('.')[0])
+n2=int(network.split('.')[1])
+n3=int(network.split('.')[2])
+n4=int(network.split('.')[3])
+
+template_network='''
+Network:
+{0:<10}{1:<10}{2:<10}{3:<10}
+{0:08b}  {1:08b}  {2:08b}  {3:08b}
+'''
+print(template_network.format(n1,n2,n3,n4))
+
+
+mask_bin='1'*int(mask)+'0'*(32-int(mask)) #Получить маску в двоичном формате 
+
+m1=int(mask_bin[0:8],2)
+m2=int(mask_bin[8:16],2)
+m3=int(mask_bin[16:24],2)
+m4=int(mask_bin[24:32],2)
+
+template_mask='''
+Mask:
+{}
+{:<8}{:<8}{:<8}{:<8}
+{}  {}  {}  {}
+'''
+print(template_mask.format(ip[-3::],m1,m2,m3,m4,mask_bin[0:8],mask_bin[8:16],mask_bin[16:24],mask_bin[24:32]))
+
+
+
+
+
+
+
+
+
