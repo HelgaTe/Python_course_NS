@@ -47,5 +47,5 @@ london_co = {
     },
 }
 
-name=input('Enter device name : ')
+name=input('Enter equipment name: ')
 print(london_co[name])
