@@ -40,3 +40,15 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+
+mac_table = [] # сортировку мы можем произвести для списка, поэтому создаем шаблон списка, чтобы записать результат работы скрипта
+
+with open("CAM_table.txt", "r") as conf:
+    for line in conf:
+        words = line.split()
+        if words and words[0].isdigit():
+            vlan, mac, _, intf = words
+            mac_table.append([int(vlan), mac, intf])
+
+for vlan, mac, intf in sorted(mac_table): # для отсортированного списка списков применить форматировани, чтобы выровнять таблицу 
+    print(f"{vlan:<9}{mac:20}{intf}") 

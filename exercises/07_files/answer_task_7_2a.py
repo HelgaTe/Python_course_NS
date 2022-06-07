@@ -15,12 +15,16 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+from sys import argv
 
 ignore = ["duplex", "alias", "configuration"]
 
-with open('config_sw1.txt','r') as f:
+filename = argv[1]
+
+with open(filename) as f:
     for line in f:
-        line=line.rstrip()
-        if 'duplex'not in line and 'alias' not in line and 'configuration' not in line and not line.startswith('!'):
-            print(line)
-                
+        words = line.split()
+        words_intersect = set(words) & set(ignore)
+        if not line.startswith("!") and not words_intersect:
+            print(line.rstrip())
+

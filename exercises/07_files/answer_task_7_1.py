@@ -15,21 +15,17 @@ Outbound Interface    FastEthernet0/0
 
 """
 
-template='''
-{:<25}{}
-{:<25}{}
-{:<25}{}
-{:<25}{}
-{:<25}{}
-'''
+output = "\n{:25} {}" * 5
 
-with open('ospf.txt','r') as f:
+with open("ospf.txt", "r") as f:
     for line in f:
-        line=line.rstrip()
-        line=line.split()
-        param1=line[1]
-        param2=line[2].strip('[').strip(']')
-        param3=line[4].strip(',')
-        param4=line[5].strip(',')
-        param5=line[6]
-        print(template.format('Prefix',param1,'AD/Metric',param2,'Next-Hop',param3,'Last update',param4,'Outbound Interface',param5))
+        route = line.replace(",", " ").replace("[", "").replace("]", "")
+        route = route.split()
+
+        print(output.format(
+                "Prefix", route[1],
+                "AD/Metric", route[2],
+                "Next-Hop", route[4],
+                "Last update", route[5],
+                "Outbound Interface", route[6],
+        ))
