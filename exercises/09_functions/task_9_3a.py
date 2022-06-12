@@ -44,4 +44,4 @@ def get_int_vlan_map(config_filename):
                 vlans=line_item[4::]
                 vlans_int=[int(item) for item in vlans[0].split(',')]
                 trunk_dict[intf]=vlans_int
-    return access_dict, trunk_dict            
+    return access_dict, trunk_dict     
