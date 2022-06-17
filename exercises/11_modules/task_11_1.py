@@ -35,7 +35,7 @@ R6           Fa 0/2          143           R S I           2811       Fa 0/0
 """
 
 
-def parse_cdp_neighbors(command_output):
+def parse_cdp_neighbors(command_input):
     """
     Тут мы передаем вывод команды одной строкой потому что именно в таком виде будет
     получен вывод команды с оборудования. Принимая как аргумент вывод команды,
@@ -44,7 +44,7 @@ def parse_cdp_neighbors(command_output):
     Плюс учимся работать с таким выводом.
     """
 
-    command_list = command_output.split('\n')
+    command_list = command_input.split('\n')
     result = {}
     for line in command_list:
         if 'neighbors' in line:
@@ -63,10 +63,7 @@ def parse_cdp_neighbors(command_output):
     return result
 
 
-with open('sh_cdp_n_sw1.txt') as f:
-    command_output = f.read()
-    print(parse_cdp_neighbors(command_output))
-
 if __name__ == "__main__":
-    with open("sh_cdp_n_sw1.txt") as f:
-        print(parse_cdp_neighbors(f.read()))
+    with open('sh_cdp_n_sw1.txt') as f:
+        command_output = f.read()
+        print(parse_cdp_neighbors(command_output))
