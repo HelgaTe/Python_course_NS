@@ -39,24 +39,15 @@ from task_11_1 import parse_cdp_neighbors
 
 
 def create_network_map(filenames):
-    final = []
+    final = {}
     for file in infiles:
         with open(file) as f:
-            command_output = f.read()
-            result = parse_cdp_neighbors(command_output)
-            final.append(result)
-            keys = []
-            values = []
-            for item in final:
-                key = list(item.keys())
-                value = list(item.values())
-                keys.append(key)
-                values.append(value)
-                keys_list = [item for keys_list in keys for item in keys_list]
-                values_list = [item for values_list in values for item in values_list]
-                fin_dict = dict(zip(keys_list, values_list))
-    return fin_dict
+            show_command = f.read()
+            parse = parse_cdp_neighbors(show_command)
+            final.update(parse)
+    return final
 
 
-network_map_result = create_network_map(infiles)
-print(network_map_result)
+if __name__ == "__main__":
+    network_map_result = create_network_map(infiles)
+    print(network_map_result)

@@ -44,9 +44,8 @@ def parse_cdp_neighbors(command_input):
     Плюс учимся работать с таким выводом.
     """
 
-    command_list = command_input.split('\n')
     result = {}
-    for line in command_list:
+    for line in command_input.split("\n"):
         if 'neighbors' in line:
             neighbor = line.split()[0][:-5]
         elif line and line[-1].isdigit():

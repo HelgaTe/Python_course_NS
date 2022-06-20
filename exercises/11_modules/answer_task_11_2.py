@@ -28,8 +28,9 @@ Cгенерировать топологию, которая соответст�
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
-from task_11_1 import parse_cdp_neighbors
 from pprint import pprint
+
+from task_11_1 import parse_cdp_neighbors
 
 infiles = [
     "sh_cdp_n_sw1.txt",
@@ -41,7 +42,7 @@ infiles = [
 
 def create_network_map(filenames):
     network_map = {}
-
+# Метод update позволяет добавлять в словарь содержимое другого словаря
     for filename in filenames:
         with open(filename) as show_command:
             parsed = parse_cdp_neighbors(show_command.read())
