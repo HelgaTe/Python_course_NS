@@ -82,7 +82,7 @@ infiles = [
 ]
 
 
-def unique_network_map(topology_dict):
+def unique_network_map (topology_dict):
     network_map = {}
     for key, value in topology_dict.items():
         if not network_map.get(value) == key:
