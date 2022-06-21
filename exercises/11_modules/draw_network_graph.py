@@ -12,9 +12,9 @@ except ImportError:
 
 styles = {
     "graph": {
-        "label": "Network Map",
-        "fontsize": "16",
-        "fontcolor": "white",
+        "label": "Mapping",
+        "fontsize": "20",
+        "fontcolor": "red",
         "bgcolor": "#333333",
         "rankdir": "BT",
     },

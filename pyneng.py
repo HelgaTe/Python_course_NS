@@ -99,7 +99,7 @@ class CustomTasksType(click.ParamType):
                 self.fail(
                     red(
                         f"Данный формат не поддерживается {task}. "
-                        "Допустимые форматы: 1, 1a, 1b-d, 1*, 1-3"
+                        "Допустимые форматы: 1, 1a, 1b-d.svg, 1*, 1-3"
                     )
                 )
         return test_files
@@ -245,7 +245,7 @@ def copy_answer_files(passed_tasks, pth):
 )
 @click.argument("tasks", default="all", type=CustomTasksType())
 @click.option(
-    "--disable-verbose", "-d", is_flag=True, help="Отключить подробный вывод pytest"
+    "--disable-verbose", "-d.svg", is_flag=True, help="Отключить подробный вывод pytest"
 )
 @click.option(
     "--answer",
@@ -273,7 +273,7 @@ def cli(tasks, disable_verbose, answer, debug):
         ptest 1-5 -a     запустить тесты и записать ответы на задания,
                          которые прошли тесты, в файлы answer_task_x.py
 
-    Флаг -d отключает подробный вывод pytest, который включен по умолчанию.
+    Флаг -d.svg отключает подробный вывод pytest, который включен по умолчанию.
     Флаг -a записывает ответы в файлы answer_task_x.py, если тесты проходят.
     """
     if not debug:
