@@ -1,0 +1,12 @@
+__pycache__
+def_ping_ip.py
+my_test.txt
+my_test2_py.txt
+my_test_py.txt
+subpr_result.py
+task_12_1.py
+task_12_2.py
+task_12_3.py
+test_task_12_1.py
+test_task_12_2.py
+test_task_12_3.py
