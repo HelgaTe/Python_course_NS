@@ -20,15 +20,13 @@ Reachable    Unreachable
 """
 from tabulate import tabulate
 
-def print_ip_table (ip_reachable_list, ip_unreachable_list):
-    data = {
-        'Reachable': ip_reachable_list,
-        'Unreachable': ip_unreachable_list}
-    output=tabulate(data,headers='keys')
-    print(output)
+
+def print_ip_table(reach_ip, unreach_ip):
+    table = {"Reachable": reach_ip, "Unreachable": unreach_ip}
+    print(tabulate(table, headers="keys"))
 
 
-reach_ip = ["10.10.1.7", "10.10.1.8", "10.10.1.9", "10.10.1.15"]
-unreach_ip = ["10.10.2.1", "10.10.1.2"]
-
-print(print_ip_table(reach_ip,unreach_ip))
+if __name__ == "__main__":
+    reach_ip = ["10.1.1.1", "10.1.1.2"]
+    unreach_ip = ["10.1.1.7", "10.1.1.8", "10.1.1.9"]
+    print_ip_table(reach_ip, unreach_ip)
