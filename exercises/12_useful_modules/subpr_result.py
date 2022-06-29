@@ -24,5 +24,3 @@ subpr_result('ls','my_test_py.txt')
 
 if __name__ == "__main__":
     subpr_result('ls', 'my_test.txt')
-print('Hello')
-print('='*40)

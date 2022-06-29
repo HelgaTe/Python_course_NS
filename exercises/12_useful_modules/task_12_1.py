@@ -17,7 +17,22 @@ IP-адрес считается доступным, если выполнени
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
-from subpr_result import subpr_result
+import subprocess
 
 
-subpr_result('ls','my_test2_py.txt')
+def ping_ip_addresses(ip_list):
+    accessible_ip = []
+    non_accessible = []
+
+    for ip in ip_list:
+        result = subprocess.run(['ping', '-c', '3', '-n', ip])
+        if result.returncode == 0:
+            accessible_ip.append(ip)
+        else:
+            non_accessible.append(ip)
+    return (accessible_ip, non_accessible)
+
+
+if __name__ == "__main__":
+    list_of_ips = ["1.1.1.1", "8.8.8.8", "8.8.4.4", "8.8.7.1"]
+    ping_ip_addresses(list_of_ips)
