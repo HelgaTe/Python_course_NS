@@ -15,4 +15,6 @@ with open('log.txt') as f:
             ports.add(match.group(2))
             ports.add(match.group(3))
 
+print(vlan,ports)
+print('='*40)
 print('Петля между портами {} в VLAN {}'.format(', '.join(ports), vlan))

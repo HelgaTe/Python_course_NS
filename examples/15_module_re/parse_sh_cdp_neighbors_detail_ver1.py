@@ -3,7 +3,7 @@ from pprint import pprint
 
 
 def parse_cdp(filename):
-    result = {}
+    result = {} # получить данные в виде словаря
 
     with open(filename) as f:
         for line in f:

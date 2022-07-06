@@ -5,7 +5,7 @@ regex = ('Host \S+ '
          'is flapping between port '
          '(\S+) and port (\S+)')
 
-ports = set()
+ports = set()  # Так как порты могут дублироваться - добавляем их в множество, чтобы получить подборку уникальных интерфейсов
 
 with open('log.txt') as f:
     for line in f:

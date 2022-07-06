@@ -11,6 +11,7 @@ with open('dhcp_snooping.txt') as data:
         match = regex.search(line)
         if match:
             result.append(match.groupdict())
+    print(result)
 
 print('К коммутатору подключено {} устройства'.format(len(result)))
 
