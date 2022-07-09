@@ -24,27 +24,14 @@
 
 """
 import re
-from pprint import pprint
 
-def get_ip_from_cfg(filename):
-    # <<< List comprehension >>>
-    regex = r'ip address (\S+) (\S+)'
-    with open(filename) as f:
-        result =[m.groups() for m in re.finditer(regex,f.read())]
+
+def get_ip_from_cfg(config):
+    regex = r"ip address (\S+) (\S+)"
+    with open(config) as f:
+        result = [m.groups() for m in re.finditer(regex, f.read())]
     return result
 
-    # <<< List append & named groups >>>
-    # output = []
-    # with open(filename) as f:
-    #     for line in f:
-    #         m = re.search(r' (ip address) (?P<ip>(?:\d+\.){3}\d+) (?P<mask>(?:\d+\.){3}\d+)',line)
-    #         if m:
-    #             ip = m.group('ip')
-    #             mask = m.group('mask')
-    #             tpl = (ip, mask)
-    #             output.append(tpl)
-    # return output
 
-if __name__=='__main__':
-    test=get_ip_from_cfg('config_r1.txt')
-    pprint(test)
+print(get_ip_from_cfg('config_r1.txt'))
+

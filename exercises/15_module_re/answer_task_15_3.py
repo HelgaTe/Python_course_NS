@@ -33,7 +33,6 @@ object network LOCAL_10.1.9.5
 Во всех правилах для ASA интерфейсы будут одинаковыми (inside,outside).
 """
 import re
-from pprint import pprint
 
 
 def convert_ios_nat_to_asa(cisco_ios, cisco_asa):
@@ -52,4 +51,4 @@ def convert_ios_nat_to_asa(cisco_ios, cisco_asa):
 
 
 if __name__ == "__main__":
-    convert_ios_nat_to_asa("cisco_nat_config.txt", "test_15_3_h.txt")
+    convert_ios_nat_to_asa("cisco_nat_config.txt", "cisco_asa_config.txt")

@@ -25,10 +25,8 @@
 
 """
 import re
-from pprint import pprint
 
 def get_ip_from_cfg(config):
-
     with open(config) as f:
         regex = re.compile(
             r"interface (?P<intf>\S+)\n"
@@ -39,10 +37,3 @@ def get_ip_from_cfg(config):
 
     result = {m.group("intf"): m.group("ip", "mask") for m in match}
     return result
-
-
-if __name__=='__main__':
-    test=get_ip_from_cfg('config_r1.txt')
-    pprint(test)
-
-
