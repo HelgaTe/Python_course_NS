@@ -1,9 +1,10 @@
 import json
+from pprint import pprint
 
 with open('sw_templates.json') as f:
     templates = json.load(f)
 
-print(templates)
+pprint(templates)
 
 for section, commands in templates.items():
     print(section)
