@@ -11,7 +11,7 @@ access_template = [
     'spanning-tree bpduguard enable'
 ]
 
-to_json = {'trunk': trunk_template, 'access': access_template}
+to_json = {'trunk': trunk_template, 'access': access_template} # темплейт для записи данных в файл
 
 with open('sw_templates.json', 'w') as f:
     json.dump(to_json, f)

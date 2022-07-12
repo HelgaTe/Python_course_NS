@@ -14,7 +14,7 @@ access_template = [
 to_json = {'trunk': trunk_template, 'access': access_template}
 
 with open('sw_templates.json', 'w') as f:
-    json.dump(to_json, f, sort_keys=True, indent=2)
+    json.dump(to_json, f, sort_keys=True, indent=5)
 
 with open('sw_templates.json') as f:
     print(f.read())
