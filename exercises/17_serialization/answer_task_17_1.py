@@ -33,50 +33,23 @@ sw2_dhcp_snooping.txt, sw3_dhcp_snooping.txt.
 """
 import csv
 import re
-from pprint import pprint
+import glob
 
 
-def write_dhcp_snooping_to_csv (filenames, output):
-    """
-    обрабатывает вывод команды show dhcp snooping binding и записывает обработанные данные в csv файл
-    :param filenames: список с именами файлов с выводом show dhcp snooping binding
-    :param output: имя файла в формате csv, в который будет записан результат
-    """
-    regex=re.compile(
-        r'(?P<mac>\S+\:\d+)' #mac
-        r' +(?P<ip>\S+)' #ip
-        r'.+ ' #info not included for parsing
-        r'(?P<vlan>\d+)' #vlan
-        r' +(?P<intf>\S+)') #interface
+def write_dhcp_snooping_to_csv(filenames, output):
+    regex = r"(\S+) +(\S+) +\d+ +\S+ +(\d+) +(\S+)"
+    with open(output, "w") as dest:
+        writer = csv.writer(dest)
+        writer.writerow(["switch", "mac", "ip", "vlan", "interface"])
+        for filename in filenames:
+            switch = re.search("([^/]+)_dhcp_snooping.txt", filename).group(1)
+            with open(filename) as f:
+                for line in f:
+                    match = re.search(regex, line)
+                    if match:
+                        writer.writerow((switch,) + match.groups())
 
-    data=[]
-    header = ['switch', 'mac', 'ip', 'vlan', 'interface']
-    data.append(header)
-
-    for file in filenames:
-        switch = file.split('_')[0]
-
-        with open (file) as scr:
-            for match in regex.finditer(scr.read()):
-                mac,ip,vlan,intf=match.group('mac','ip','vlan','intf')
-                raw_data=[switch,mac,ip,vlan,intf]
-                data.append(raw_data)
-
-        with open (output,'w') as dest :
-            writer=csv.writer(dest)
-            for row in data:
-                writer.writerow(row)
 
 if __name__ == "__main__":
-    filenames = ['sw1_dhcp_snooping.txt','sw2_dhcp_snooping.txt','sw3_dhcp_snooping.txt']
-    write_dhcp_snooping_to_csv(filenames,'dhcp_snooping.csv')
-
-
-
-
-
-
-
-
-
-
+    sh_dhcp_snoop_files = glob.glob("*_dhcp_snooping.txt")
+    write_dhcp_snooping_to_csv(sh_dhcp_snoop_files, "example_csv.csv")

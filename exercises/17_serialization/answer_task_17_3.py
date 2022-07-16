@@ -28,50 +28,19 @@ import re
 
 
 def parse_sh_cdp_neighbors(command_output):
-    """
-    функция обрабатывает вывод команды show cdp neighbors
-    @param command_output: вывод команды одной строкой (не имя файла)
-    @return: словарь, который описывает соединения между устройствами
-    """
     regex = re.compile(
-        r'(?P<dev_id>\S+) +'
-        r'(?P<loc_intf>\S+ \d+\/\d+) .+'
-        r'(?P<port>Eth \S+)'
+        r"(?P<r_dev>\w+)  +(?P<l_intf>\S+ \S+)"
+        r"  +\d+  +[\w ]+  +\S+ +(?P<r_intf>\S+ \S+)"
     )
-
-    config_dict={}
-    main_dev=re.search(r'(?P<main_dev>\S+)>',command_output).group('main_dev')
-    config_dict[main_dev]={}
-
+    connect_dict = {}
+    l_dev = re.search(r"(\S+)[>#]", command_output).group(1)
+    connect_dict[l_dev] = {}
     for match in regex.finditer(command_output):
-        dev_id,loc_intf,port=match.groups()
-        config_dict[main_dev][loc_intf]={dev_id:port}
-
-    return config_dict
-
-
+        r_dev, l_intf, r_intf = match.group("r_dev", "l_intf", "r_intf")
+        connect_dict[l_dev][l_intf] = {r_dev: r_intf}
+    return connect_dict
 
 
 if __name__ == "__main__":
-    with open ('sh_cdp_n_r1.txt') as f:
+    with open("sh_cdp_n_sw1.txt") as f:
         print(parse_sh_cdp_neighbors(f.read()))
-
-# regex=re.compile(
-#         r'(?P<dev_id>\S+) +'
-#         r'(?P<loc_intf>\S+ \d+\/\d+) .+'
-#         r'(?P<port>Eth \S+)'
-#     )
-
-# config_dict = {}
-# with open('sh_cdp_n_r1.txt') as f:
-#     main_dev = re.search(r'(?P<main_dev>\S+)>', f.read()).group('main_dev')
-#     config_dict[main_dev] = {}
-#
-# with open('sh_cdp_n_r2.txt') as f:
-#     for match in regex.finditer(f.read()):
-#         dev_id, loc_intf, port = match.groups()
-#         config_dict[main_dev][loc_intf] = {dev_id: port}
-#         print(config_dict)
-#
-
-

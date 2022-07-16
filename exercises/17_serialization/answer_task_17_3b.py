@@ -44,34 +44,22 @@
 
 """
 import yaml
-from pprint import pprint
-
 from draw_network_graph import draw_topology
 
-def transform_topology (topology_file) :
 
-    topology_upd_dict={}
+def transform_topology(topology_filename):
+    with open(topology_filename) as f:
+        raw_topology = yaml.safe_load(f)
 
-    with open (topology_file) as f:
-        topology_dict=yaml.safe_load(f)
-
-        for key,value in topology_dict.items():
-            main_dev=key
-            for k,v in value.items():
-                k_upd=(main_dev, k)
-                for k0,v0 in v.items():
-                    v_upd=(k0,v0)
-                    topology_upd_dict[k_upd]=v_upd
-    unique_topology_map={}
-    for k_t_upd,v_t_upd in topology_upd_dict.items():
-        k_t_upd,v_t_upd=sorted([k_t_upd,v_t_upd])
-        unique_topology_map[k_t_upd]=v_t_upd
-
-    return unique_topology_map
-    # return topology_upd_dict
+    formatted_topology = {}
+    for l_device, peer in raw_topology.items():
+        for l_int, remote in peer.items():
+            r_device, r_int = list(remote.items())[0]
+            if not (r_device, r_int) in formatted_topology:
+                formatted_topology[(l_device, l_int)] = (r_device, r_int)
+    return formatted_topology
 
 
 if __name__ == "__main__":
-    result=transform_topology('topology.yaml')
-    pprint(result)
-    draw_topology(result,'topology_test_olga')
+    formatted_topology = transform_topology("topology.yaml")
+    draw_topology(formatted_topology)
