@@ -41,7 +41,7 @@ def send_show_command(ip, username, password, enable, command):
 
 
 if __name__ == "__main__":
-    devices = ["192.168.100.1", "192.168.100.2", "192.168.100.3"]
+    devices = ["172.16.100.129", "172.16.100.130", "172.16.100.131"]
     for ip in devices:
         result = send_show_command(ip, "cisco", "cisco", "cisco", "sh run")
         pprint(result, width=120)

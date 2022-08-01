@@ -21,7 +21,7 @@ def send_show_command(device, commands):
 if __name__ == "__main__":
     device = {
         "device_type": "cisco_ios_telnet",
-        "ip": "192.168.100.1",
+        "ip": "172.16.100.129",
         "username": "cisco",
         "password": "cisco",
         "secret": "cisco",

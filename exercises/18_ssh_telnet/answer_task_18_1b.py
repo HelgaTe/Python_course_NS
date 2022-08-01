@@ -12,31 +12,26 @@
 
 Для проверки измените IP-адрес на устройстве или в файле devices.yaml.
 """
-import netmiko
 import yaml
-from pprint import pprint
+import sys
+from netmiko import ConnectHandler
+from netmiko.ssh_exception import SSHException
 
-def send_show_command (device, command):
-    '''
-    подключается по SSH и выполняет указанную команду
-    @param device: словарь с параметрами подключения к устройству
-    @param command:  команда, которую надо выполнить
-    @return:
-    '''
 
+def send_show_command(device, command):
     try:
-        with netmiko.ConnectHandler(**device) as ssh: # Подключение по SSH, распаковка параметров
-            ssh.enable() # Перейти в режим enable
-            output=ssh.send_command(command) # отправить одну команду
-        return output
-    except (netmiko.NetmikoAuthenticationException,netmiko.NetmikoTimeoutException) as err:
-        print(err)
+        with ConnectHandler(**device) as ssh:
+            ssh.enable()
+            result = ssh.send_command(command)
+            return result
+    except SSHException as error:
+        print(error)
 
 
 if __name__ == "__main__":
     command = "sh ip int br"
     with open("devices.yaml") as f:
         devices = yaml.safe_load(f)
-
-    for dev in devices:
-        pprint(send_show_command(dev, command))
+    r1 = devices[0]
+    result = send_show_command(r1, command)
+    print(result)

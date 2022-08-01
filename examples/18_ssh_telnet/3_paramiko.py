@@ -15,16 +15,20 @@ def send_show_command(
     short_pause=1,
     long_pause=5,
 ):
-    cl = paramiko.SSHClient()
-    cl.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    '''
+    сначала создается клиент и выполняются настройки клиента,
+    затем выполняется подключение и получение интерактивной сессии
+    '''
+    cl = paramiko.SSHClient() # класс, который представляет соединение к SSH-серверу, выполняет аутентификацию клиента
+    cl.set_missing_host_key_policy(paramiko.AutoAddPolicy()) # настройка указывает какую политику использовать, когда выполнятся подключение к серверу, ключ которого неизвестен. Политика paramiko.AutoAddPolicy() автоматически добавляет новое имя хоста и ключ в локальный объект HostKeys.
     cl.connect(
         hostname=ip,
         username=username,
         password=password,
-        look_for_keys=False,
-        allow_agent=False,
-    )
-    with cl.invoke_shell() as ssh:
+        look_for_keys=False, # по умолчанию аутентификация по ключам. Чтобы отключить - поставить флаг False
+        allow_agent=False, # может подключаться к локальному SSH агенту ОС. Это нужно при работе с ключами; в данном случае аутентификация по логину/паролю (нужно отключить)
+    ) # выполняет подключение к SSH-серверу и аутентифицирует подключение
+    with cl.invoke_shell() as ssh: # установить интерактивную сессию SSH с сервером
         ssh.send("enable\n")
         ssh.send(enable + "\n")
         time.sleep(short_pause)
@@ -51,7 +55,7 @@ def send_show_command(
 
 
 if __name__ == "__main__":
-    devices = ["192.168.100.1", "192.168.100.2", "192.168.100.3"]
+    devices = ["172.16.100.129", "172.16.100.130", "172.16.100.131"]
     commands = ["sh clock", "sh arp"]
-    result = send_show_command("192.168.100.1", "cisco", "cisco", "cisco", commands)
+    result = send_show_command("172.16.100.129", "cisco", "cisco", "cisco", commands)
     pprint(result, width=120)

@@ -26,7 +26,7 @@ def send_cfg_commands(device, section, command):
 if __name__ == "__main__":
     device_params = {
         "device_type": "cisco_ios",
-        "ip": "192.168.100.1",
+        "ip": "172.16.100.129",
         "username": "cisco",
         "password": "cisco",
         "secret": "cisco",

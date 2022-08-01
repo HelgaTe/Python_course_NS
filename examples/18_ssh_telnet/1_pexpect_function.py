@@ -35,7 +35,7 @@ def send_ios_show_pexpect(ip, command, username=None, password=None, enable=None
 
 
 if __name__ == "__main__":
-    command = sys.argv[1]
-    devices_ip = ["192.168.100.1", "192.168.100.2", "192.168.100.3"]
+    command = sys.argv[0]
+    devices_ip = ["172.16.100.129", "172.16.100.130", "172.16.100.131"]
     for ip in devices_ip:
         print(send_ios_show_pexpect(ip, command, *["cisco"] * 3))

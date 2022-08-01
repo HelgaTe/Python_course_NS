@@ -33,70 +33,72 @@ In [11]: result = send_config_commands(r1, commands)
 
 In [12]: pprint(result)
 ({},
- {'logging': 'config term\n'
-             'Enter configuration commands, one per line.  End with CNTL/Z.\n'
-             'R1(config)#logging\n'
-             '% Incomplete command.\n'
-             '\n'
+ {'logging': 'config term
+'
+             'Enter configuration commands, one per line.  End with CNTL/Z.
+'
+             'R1(config)#logging
+'
+             '% Incomplete command.
+'
+             '
+'
              'R1(config)#',
-  'logging 0255.255.1': 'config term\n'
+  'logging 0255.255.1': 'config term
+'
                         'Enter configuration commands, one per line.  End with '
-                        'CNTL/Z.\n'
-                        'R1(config)#logging 0255.255.1\n'
-                        '                   ^\n'
-                        "% Invalid input detected at '^' marker.\n"
-                        '\n'
+                        'CNTL/Z.
+'
+                        'R1(config)#logging 0255.255.1
+'
+                        '                   ^
+'
+                        "% Invalid input detected at '^' marker.
+"
+                        '
+'
                         'R1(config)#'})
 
 """
+import re
+from netmiko import ConnectHandler
+import yaml
 
-commands_with_errors = ["logging 0255.255.1", "logging", "a"]
+
+# списки команд с ошибками и без:
+commands_with_errors = ["logging 0255.255.1", "logging", "i"]
 correct_commands = ["logging buffered 20010", "ip http server"]
-
 commands = commands_with_errors + correct_commands
 
-import netmiko
-import yaml
-import re
-from pprint import pprint
 
-
-def send_config_commands(device,config,log=True):
-    '''
-    подключается по SSH к устройству и выполняет перечень команд в конфигурационном режиме
-    @param device: словарь с параметрами подключения к устройству
-    @param config: список команд, которые надо выполнить
-    '''
+def send_config_commands(device, config_commands, log=True):
     good_commands = {}
     bad_commands = {}
-    msg='Команда "{}" выполнилась с ошибкой "{}" на устройстве {}'
     regex = "% (?P<errmsg>.+)"
+
     if log:
-        log = device['host']
-        status = f'Подключаюсь к {log}...'
-        print(status)
-    with netmiko.ConnectHandler(**device) as ssh:
+        print("Подключаюсь к {}...".format(device["host"]))
+    with ConnectHandler(**device) as ssh:
         ssh.enable()
-        for cmd in config:
-            result = ssh.send_config_set(cmd, exit_config_mode=False) # exit_config_mode - выйти из режима конфигурации (NO)
+        for command in config_commands:
+            result = ssh.send_config_set(command, exit_config_mode=False)
             error_in_result = re.search(regex, result)
             if error_in_result:
-                print(msg.format(cmd,error_in_result.group("errmsg"), ssh.host))
-                next_step=input('Продолжать выполнять команды? [y]/n: ')
-                bad_commands[cmd] = result
-                if next_step=='y':
-                    continue
-                else:
+                message = 'Команда "{}" выполнилась с ошибкой "{}" на устройстве {}'
+                print(message.format(command, error_in_result.group("errmsg"), ssh.host))
+                bad_commands[command] = result
+                decision = input("Продолжать выполнять команды? [y]/n: ")
+                if decision.lower() in ("n", "no"):
                     break
             else:
-                good_commands[cmd] = result
+                good_commands[command] = result
         ssh.exit_config_mode()
-        return good_commands, bad_commands
-
+    return good_commands, bad_commands
 
 
 if __name__ == "__main__":
     with open("devices.yaml") as f:
         devices = yaml.safe_load(f)
-    for device in devices:
-        pprint(send_config_commands (device, commands))
+
+    for dev in devices:
+        print(send_config_commands(dev, commands))

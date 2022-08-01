@@ -1,0 +1,5 @@
+sh ip interface brief
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            172.16.100.129  YES DHCP   up                    up      
+FastEthernet0/1            unassigned      YES NVRAM  administratively down down    
+R1

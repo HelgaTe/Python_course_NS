@@ -1,17 +1,17 @@
 - device_type: cisco_ios
-  host: 192.168.100.1
+  host: 172.16.100.129
   username: cisco
   password: cisco
   secret: cisco
   timeout: 10
 - device_type: cisco_ios
-  host: 192.168.100.2
+  host: 172.16.100.130
   username: cisco
   password: cisco
   secret: cisco
   timeout: 10
 - device_type: cisco_ios
-  host: 192.168.100.3
+  host: 172.16.100.131
   username: cisco
   password: cisco
   secret: cisco
