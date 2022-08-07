@@ -1,11 +1,12 @@
-import logging
-import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
 from pprint import pprint
+from datetime import datetime
+import time
+import logging
 
 import yaml
 from netmiko import ConnectHandler, NetMikoAuthenticationException
+
 
 logging.getLogger("paramiko").setLevel(logging.WARNING)
 
@@ -17,9 +18,9 @@ logging.basicConfig(
 def send_show(device_dict, command):
     start_msg = '===> {} Connection: {}'
     received_msg = '<=== {} Received: {}'
-    ip = device_dict['ip']
+    ip = device_dict['host']
     logging.info(start_msg.format(datetime.now().time(), ip))
-    if ip == '192.168.100.1':
+    if ip == '172.16.100.129':
         time.sleep(5)
 
     with ConnectHandler(**device_dict) as ssh:
@@ -36,7 +37,7 @@ def send_command_to_devices(devices, command):
         for device in devices:
             future = executor.submit(send_show, device, command)
             future_list.append(future)
-            print('Future: {} for device {}'.format(future, device['ip']))
+            print('Future: {} for device {}'.format(future, device['host']))
         for f in as_completed(future_list):
             result = f.result()
             print('Future done {}'.format(f))
@@ -48,4 +49,3 @@ if __name__ == '__main__':
     with open('devices.yaml') as f:
         devices = yaml.safe_load(f)
     pprint(send_command_to_devices(devices, 'sh clock'))
-

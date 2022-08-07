@@ -21,7 +21,7 @@ received_msg = '<=== {} Received: {}'
 def send_show(device_dict, command):
     ip = device_dict['host']
     logging.info(start_msg.format(datetime.now().time(), ip))
-    if ip == '192.168.100.1': time.sleep(5)
+    if ip == '172.16.100.129': time.sleep(5)
     with ConnectHandler(**device_dict) as ssh:
         ssh.enable()
         result = ssh.send_command(command)
