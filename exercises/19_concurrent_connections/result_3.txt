@@ -1,0 +1,14 @@
+R3#sh clock
+*21:24:26.903 UTC Tue Aug 2 2022
+R2#sh arp
+Protocol  Address          Age (min)  Hardware Addr   Type   Interface
+Internet  172.16.100.1            7   8e85.9098.a166  ARPA   FastEthernet0/0
+Internet  172.16.100.2            2   0050.56ea.9007  ARPA   FastEthernet0/0
+Internet  172.16.100.129          5   ca01.061e.0008  ARPA   FastEthernet0/0
+Internet  172.16.100.130          -   ca02.062d.0008  ARPA   FastEthernet0/0
+Internet  172.16.100.131          9   ca03.063c.0008  ARPA   FastEthernet0/0
+Internet  172.16.100.254        246   0050.56f3.d75f  ARPA   FastEthernet0/0
+R1#sh ip int br
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            172.16.100.129  YES DHCP   up                    up      
+FastEthernet0/1            unassigned      YES NVRAM  administratively down down    

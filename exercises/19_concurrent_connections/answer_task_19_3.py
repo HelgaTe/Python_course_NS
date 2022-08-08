@@ -39,41 +39,41 @@ router ospf 1
 
 Проверить работу функции на устройствах из файла devices.yaml и словаре commands
 """
-
-# Этот словарь нужен только для проверки работа кода, в нем можно менять IP-адреса
-# тест берет адреса из файла devices.yaml
-commands = {
-    "172.16.100.131": "sh run | s ^router ospf",
-    "172.16.100.129": "sh ip int br",
-    "172.16.100.130": "sh int desc",
-}
-
-from netmiko import ConnectHandler
-import yaml
+from itertools import repeat
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+from netmiko import ConnectHandler, NetMikoTimeoutException
+import yaml
 
-def send_sh_command(dev, command):
-    with ConnectHandler(**dev) as ssh:
+
+commands = {
+    "172.16.100.129": "sh ip int br",
+    "172.16.100.130": "sh arp",
+    "172.16.100.131": "sh clock",
+}
+
+
+def send_show_command(device, command):
+    with ConnectHandler(**device) as ssh:
         ssh.enable()
-        output = ssh.send_command(command)
+        result = ssh.send_command(command)
         prompt = ssh.find_prompt()
-    return f'{prompt}{command}\n{output}'
+    return f"{prompt}{command}\n{result}\n"
 
 
 def send_command_to_devices(devices, commands_dict, filename, limit=3):
     with ThreadPoolExecutor(max_workers=limit) as executor:
-        future_list = []
-        for device in devices:
-            future = executor.submit(send_sh_command, device, commands_dict[device['host']]) # Future => объекты создаются методом submit.
-            future_list.append(future)
-        with open (filename, 'w') as f:
-            for ft in as_completed(future_list):
-                f.write(ft.result())
+        futures = [
+            executor.submit(send_show_command, device, commands_dict[device["host"]])
+            for device in devices
+        ]
+        with open(filename, "w") as f:
+            for future in as_completed(futures):
+                f.write(future.result())
 
 
 if __name__ == "__main__":
 
     with open("devices.yaml") as f:
         devices = yaml.safe_load(f)
-        print(send_command_to_devices(devices, commands, '19_3_result.txt'))
+    send_command_to_devices(devices, commands, "result_3.txt")

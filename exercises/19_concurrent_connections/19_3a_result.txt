@@ -1,0 +1,25 @@
+R2#sh ip int br
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            172.16.100.130  YES DHCP   up                    up      
+FastEthernet0/1            unassigned      YES NVRAM  administratively down down    
+R1#sh ip route | ex -
+
+Gateway of last resort is 172.16.100.2 to network 0.0.0.0
+
+S*    0.0.0.0/0 [254/0] via 172.16.100.2
+      172.16.0.0/16 is variably subnetted, 2 subnets, 2 masks
+C        172.16.100.0/24 is directly connected, FastEthernet0/0
+L        172.16.100.129/32 is directly connected, FastEthernet0/0
+
+R2#sh int desc
+Interface                      Status         Protocol Description
+Fa0/0                          up             up       
+Fa0/1                          admin down     down     
+R1#sh ip int br
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            172.16.100.129  YES DHCP   up                    up      
+FastEthernet0/1            unassigned      YES NVRAM  administratively down down    
+R3#sh int desc
+Interface                      Status         Protocol Description
+Fa0/0                          up             up       
+Fa0/1                          admin down     down     

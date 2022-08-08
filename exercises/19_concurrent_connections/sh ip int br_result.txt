@@ -1,0 +1,12 @@
+R1#sh ip int br
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            172.16.100.129  YES DHCP   up                    up      
+FastEthernet0/1            unassigned      YES NVRAM  administratively down down    
+R2#sh ip int br
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            172.16.100.130  YES DHCP   up                    up      
+FastEthernet0/1            unassigned      YES NVRAM  administratively down down    
+R3#sh ip int br
+Interface                  IP-Address      OK? Method Status                Protocol
+FastEthernet0/0            172.16.100.131  YES DHCP   up                    up      
+FastEthernet0/1            unassigned      YES NVRAM  administratively down down    

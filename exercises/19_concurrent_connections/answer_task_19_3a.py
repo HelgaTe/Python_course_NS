@@ -43,46 +43,52 @@ O        10.1.1.1/32 [110/11] via 192.168.100.1, 07:12:03, Ethernet0/0
 O        10.30.0.0/24 [110/20] via 192.168.100.1, 07:12:03, Ethernet0/0
 
 
+Порядок команд в файле может быть любым.
+
 Для выполнения задания можно создавать любые дополнительные функции,
 а также использовать функции созданные в предыдущих заданиях.
 
 Проверить работу функции на устройствах из файла devices.yaml и словаре commands
 """
+from itertools import repeat
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# Этот словарь нужен только для проверки работа кода, в нем можно менять IP-адреса
-# тест берет адреса из файла devices.yaml
+from netmiko import ConnectHandler, NetMikoTimeoutException
+import yaml
+
+
 commands = {
     "172.16.100.129": ["sh ip int br", "sh ip route | ex -"],
     "172.16.100.130": ["sh ip int br", "sh int desc"],
     "172.16.100.131": ["sh int desc"],
 }
 
-import yaml
-from netmiko import ConnectHandler
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
-
-def send_sh_command(device, command):
+def send_show_command(device, commands):
+    output = ""
     with ConnectHandler(**device) as ssh:
         ssh.enable()
-        result = ssh.send_command(command)
-        prompt = ssh.find_prompt()
-    return f'{prompt}{command}\n{result}\n'
+        for command in commands:
+            result = ssh.send_command(command)
+            prompt = ssh.find_prompt()
+            output += f"{prompt}{command}\n{result}\n"
+    return output
 
 
 def send_command_to_devices(devices, commands_dict, filename, limit=3):
-    future_list = []
     with ThreadPoolExecutor(max_workers=limit) as executor:
+        futures = []
         for device in devices:
-            for command in commands_dict[device['host']]:
-                future = executor.submit(send_sh_command, device, command)
-                future_list.append(future)
-    with open(filename, 'w') as f:
-        for ft in as_completed(future_list):
-            f.write(ft.result())
+            ip = device["host"]
+            command = commands_dict[ip]
+            futures.append(executor.submit(send_show_command, device, command))
+        with open(filename, "w") as f:
+            for future in as_completed(futures):
+                f.write(future.result())
 
 
 if __name__ == "__main__":
+    command = "sh ip int br"
     with open("devices.yaml") as f:
         devices = yaml.safe_load(f)
-    send_command_to_devices(devices, commands, "19_3a_result.txt")
+    send_command_to_devices(devices, commands, "result_3a.txt")

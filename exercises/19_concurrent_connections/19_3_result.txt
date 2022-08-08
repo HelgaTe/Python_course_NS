@@ -1,0 +1,7 @@
+R2#sh int desc
+Interface                      Status         Protocol Description
+Fa0/0                          up             up       
+Fa0/1                          admin down     down     R1#sh clock
+*12:42:53.992 UTC Wed Aug 3 2022R3#sh run | s ^router ospf
+router ospf 1
+ network 0.0.0.0 255.255.255.255 area 0
