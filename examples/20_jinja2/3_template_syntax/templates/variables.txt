@@ -4,6 +4,11 @@ interface Loopback0
  ip address 10.0.0.{{ id }} 255.255.255.255
 
 vlan {{ vlans[0] }}
+vlan {{ vlans[1] }}
+vlan {{ vlans[2] }}
+{% for vlan in vlans %}
+    vlan {{ vlan }}
+{% endfor %}
 
 router ospf 1
  router-id 10.0.0.{{ id }}

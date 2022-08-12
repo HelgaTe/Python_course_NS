@@ -27,6 +27,7 @@ cisco_vpn_1.txt и cisco_vpn_2.txt.
 Примеры конфигураций VPN, которые должна возвращать функция create_vpn_config в файлах
 cisco_vpn_1.txt и cisco_vpn_2.txt.
 """
+from task_20_1 import generate_config
 
 data = {
     "tun_num": 10,
@@ -37,12 +38,10 @@ data = {
 }
 
 
-from task_20_1 import generate_config
-
 def create_vpn_config(template1, template2, data_dict):
     cfg1 = generate_config(template1, data_dict)
     cfg2 = generate_config(template2, data_dict)
-    return (cfg1, cfg2)
+    return cfg1, cfg2
 
 
 if __name__ == "__main__":

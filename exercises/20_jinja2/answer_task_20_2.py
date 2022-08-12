@@ -18,4 +18,9 @@
 
 """
 
-#  python task_20_1.py templates/cisco_router_base data_files/router_info.yml
+# templates/cisco_router_base.txt
+"""
+{% include 'cisco_base.txt' %}
+{% include 'alias.txt' %}
+{% include 'eem_int_desc.txt' %}
+"""

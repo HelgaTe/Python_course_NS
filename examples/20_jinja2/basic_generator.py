@@ -17,18 +17,23 @@ router ospf 10
  network 10.0.0.0 0.255.255.255 area 0
 ''')
 
-liverpool = {
-    'id': '11',
-    'name': 'Liverpool',
-    'int': 'Gi1/0/17',
-    'ip': '10.1.1.10'
-}
+data = [
+    {'id': '11','name': 'Liverpool', 'int': 'Gi1/0/1','ip': '10.1.1.1'},
+    {'id': '21', 'name': 'London', 'int': 'Gi1/0/2','ip': '10.2.2.1'},
+    {'id': '31', 'name': 'Coventry', 'int': 'Gi1/0/3','ip': '10.3.3.1'},
+]
+# if one of the params is missing, jinja is ignoring this instance (by default) and doesn't raise an exception, but the output will be incorrect
+# this allows us to decide how to handle exceptional case (e.g. if param is missing -> put default variable)
+# if it is required to deal with such cases : set add param in Environment <undefined = jinja2.StrictUndefined>
 
-print(template.render(liverpool))
+
+for param in data:
+    print(template.render(param))
+    print('='*40)
 '''
-Examples:
+Examples: # configuration for single device <Liverpool>
 
-$ python generator.py
+$ python generator.py 
 
 hostname Liverpool
 !
