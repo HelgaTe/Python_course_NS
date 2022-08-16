@@ -15,13 +15,23 @@
 
 Проверить работу шаблона с помощью функции parse_command_output из задания 21.1.
 """
+from task_22_1 import parse_command_output
 
-from task_21_1 import parse_command_output
-from pprint import pprint
 
-template_file = 'templates/sh_ip_dhcp_snooping.template'
-output_file = 'output/sh_ip_dhcp_snooping.txt'
+if __name__ == "__main__":
+    with open("output/sh_ip_dhcp_snooping.txt") as show:
+        output = show.read()
+    result = parse_command_output("templates/sh_ip_dhcp_snooping.template", output)
+    print(result)
 
-with open(output_file) as f:
-    output_str = f.read()
-    pprint(parse_command_output(template_file, output_str))
+# templates/sh_ip_dhcp_snooping.template
+"""
+Value mac (\S+)
+Value ip (\S+)
+Value vlan (\d+)
+Value intf (\S+)
+
+
+Start
+  ^${mac}\s+${ip}\s+\d+\s+\S+\s+${vlan}\s+${intf} -> Record
+"""

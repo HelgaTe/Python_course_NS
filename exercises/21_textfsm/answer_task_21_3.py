@@ -24,17 +24,18 @@ from textfsm import clitable
 from pprint import pprint
 
 
-def parse_command_dynamic(command_output, attributes_dict, index_file='index', templ_path='templates'):
-    cli_table = clitable.CliTable(index_file, templ_path)  # инициализировать класс, передав ему имя файла, в котором хранится соответствие между шаблонами и командами, и указать имя каталога, в котором хранятся шаблоны
+def parse_command_dynamic(
+    command_output, attributes_dict, index_file="index", templ_path="templates"
+):
+
+    cli_table = clitable.CliTable(index_file, templ_path)
     cli_table.ParseCmd(command_output, attributes_dict)
-    k=cli_table.header
-    result=[dict(zip(k,v)) for v in cli_table]
-    return result
+    return [dict(zip(cli_table.header, row)) for row in cli_table]
 
 
-if __name__ == '__main__':
-    attr_dict = {'Command': 'sh ip int br', 'Vendor': 'cisco_ios'}
-    with open('output/sh_ip_int_br.txt') as f:
-        comm_output = f.read()  # считать вывод команды из файла
-
-        pprint(parse_command_dynamic(comm_output, attr_dict))
+if __name__ == "__main__":
+    attributes = {"Command": "show ip int br", "Vendor": "cisco_ios"}
+    with open("output/sh_ip_int_br.txt") as f:
+        command_output = f.read()
+    result = parse_command_dynamic(command_output, attributes)
+    pprint(result, width=100)

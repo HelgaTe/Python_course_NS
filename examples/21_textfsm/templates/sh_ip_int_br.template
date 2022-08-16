@@ -1,4 +1,4 @@
-Value INTF (\S+)
+Value Required INTF (\S+)
 Value ADDR (\S+)
 Value STATUS (up|down|administratively down)
 Value PROTO (up|down)

@@ -1,12 +1,12 @@
 import clitable
 
-output_sh_ip_route_ospf = open('output/sh_ip_route_ospf.txt').read()
+output_sh_ip_route_ospf = open('output/sh_ip_route_ospf.txt').read() # считать вывод, который хранится в файле
 
-cli_table = clitable.CliTable('index', 'templates')
+cli_table = clitable.CliTable('index', 'templates') # инициализировать класс, передав ему имя файла, в котором хранится соответствие между шаблонами и командами, и указать имя каталога, в котором хранятся шаблоны
 
-attributes = {'Command': 'show ip route ospf', 'Vendor': 'Cisco'}
+attributes = {'Command': 'show ip route ospf', 'Vendor': 'Cisco'} # указать, какая команда передается, и указать дополнительные атрибуты, которые помогут идентифицировать шаблон
 
-cli_table.ParseCmd(output_sh_ip_route_ospf, attributes)
+cli_table.ParseCmd(output_sh_ip_route_ospf, attributes) # передать вывод команды и словарь с параметрами
 print('CLI Table output:\n', cli_table)
 
 print('Formatted Table:\n', cli_table.FormattedTable())
