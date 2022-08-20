@@ -41,43 +41,25 @@ class Topology:
         self.topology = self._normalize(topology_dict)
 
     def _normalize(self, topology_dict):
-        self.topology = {}
-        for key, value in topology_dict.items():
-            if not self.topology.get(value) == key:
-                self.topology[key] = value
-        return self.topology
+        normalized_topology = {}
+        for box, neighbor in topology_dict.items():
+            if not neighbor in normalized_topology:
+                normalized_topology[box] = neighbor
+        return normalized_topology
 
-    def delete_link(self, delt1, delt2):
-        if self.topology.get(delt1) == delt2:
-            del self.topology[delt1]
-        elif self.topology.get(delt2) == delt1:
-            del self.topology[delt2]
+    def delete_link(self, from_port, to_port):
+        if self.topology.get(from_port) == to_port:
+            del self.topology[from_port]
+        elif self.topology.get(to_port) == from_port:
+            del self.topology[to_port]
         else:
-            print('Такого соединения нет')
+            print("Такого соединения нет")
 
     def delete_node(self, node):
-        n_top=self.topology.copy()
-        for key, value in n_top.items():
-            if node in key or node in value:
-                del self.topology[key]
-            else:
-                print("Такого устройства нет")
+        original_size = len(self.topology)
+        for src, dest in list(self.topology.items()):
+            if node in src or node in dest:
+                del self.topology[src]
+        if original_size == len(self.topology):
+            print("Такого устройства нет")
 
-
-
-
-if __name__=='__main__':
-    topology_example = {
-        ("R1", "Eth0/0"): ("SW1", "Eth0/1"),
-        ("R2", "Eth0/0"): ("SW1", "Eth0/2"),
-        ("R2", "Eth0/1"): ("SW2", "Eth0/11"),
-        ("R3", "Eth0/0"): ("SW1", "Eth0/3"),
-        ("R3", "Eth0/1"): ("R4", "Eth0/0"),
-        ("R3", "Eth0/2"): ("R5", "Eth0/0"),
-        ("SW1", "Eth0/1"): ("R1", "Eth0/0"),
-        ("SW1", "Eth0/2"): ("R2", "Eth0/0"),
-        ("SW1", "Eth0/3"): ("R3", "Eth0/0"),
-    }
-
-    top=Topology(topology_example)
-    top.delete_node('SW1')
