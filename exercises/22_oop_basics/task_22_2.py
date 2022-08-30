@@ -47,3 +47,39 @@ self._write_line(line)
 
 Он не должен делать ничего другого.
 """
+
+import telnetlib
+
+
+class CiscoTelnet:
+    def __init__(self, ip, username, password, secret):  # create and assign variables
+        self.ip = ip
+        self.username = username
+        self.password = password
+        self.secret = secret
+
+    def _write_line(self, line):  # convert line into byte line
+        b_line = f'{line}\n'.encode('utf-8')
+        return b_line
+
+    def send_show_command(self, command):
+        with telnetlib.Telnet(self.ip) as self._telnet:
+            self._telnet.read_until(b'Username')
+            self._telnet.write(self._write_line(self.username))
+            self._telnet.read_until(b'Password')
+            self._telnet.write(self._write_line(self.password))  # установлено подключение к оборудованию (передано ip, passwd)
+            indx, m, output = self._telnet.expect([b">", b"#"])
+            # return indx, m, output
+            if indx == 0:  # если метод expect вернул 0, то совпадение было найдено (это элемент с индексом ноль)
+                self._telnet.write(self._write_line('enable'))
+                self._telnet.read_until(b'Password')
+                self._telnet.write(self._write_line(self.secret))
+                self._telnet.read_until(b'#')
+                self._telnet.write(self._write_line(command))
+                com_output = self._telnet.read_until(b'#')
+            return com_output.decode('utf-8')
+
+
+if __name__ == '__main__':
+    r1 = CiscoTelnet("172.16.100.129", "cisco", "cisco", "cisco")
+    print(r1.send_show_command('sh clock'))

@@ -25,10 +25,11 @@ from pprint import pprint
 
 
 def parse_command_dynamic(command_output, attributes_dict, index_file='index', templ_path='templates'):
-    cli_table = clitable.CliTable(index_file, templ_path)  # инициализировать класс, передав ему имя файла, в котором хранится соответствие между шаблонами и командами, и указать имя каталога, в котором хранятся шаблоны
+    cli_table = clitable.CliTable(index_file,
+                                  templ_path)  # инициализировать класс, передав ему имя файла, в котором хранится соответствие между шаблонами и командами, и указать имя каталога, в котором хранятся шаблоны
     cli_table.ParseCmd(command_output, attributes_dict)
-    k=cli_table.header
-    result=[dict(zip(k,v)) for v in cli_table]
+    k = cli_table.header
+    result = [dict(zip(k, v)) for v in cli_table]
     return result
 
 

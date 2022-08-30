@@ -63,3 +63,78 @@ ValueError                                Traceback (most recent call last)
 ValueError: При выполнении команды "logging 0255.255.1" на устройстве 192.168.100.1 возникла ошибка -> Invalid input detected at '^' marker.
 
 """
+
+import telnetlib
+from textfsm import clitable
+import time
+import re
+
+
+
+class CiscoTelnet:
+    def __init__(self, ip, username, password, secret):
+        self.ip=ip
+        self.telnet = telnetlib.Telnet(ip)
+        self.telnet.read_until(b"Username:")
+        self._write_line(username)
+        self.telnet.read_until(b"Password:")
+        self._write_line(password)
+        self._write_line("enable")
+        self.telnet.read_until(b"Password:")
+        self._write_line(secret)
+        self.telnet.read_very_eager()
+
+    def _write_line(self, line):
+        self.telnet.write(line.encode("utf-8") + b"\n")
+
+    def _error_in_command (self, command, result, strict):
+        regex = "% (?P<err>.+)"  # error messages starts with % in the beginning
+        template = (
+            'При выполнении команды "{cmd}" на устройстве {device} '
+            "возникла ошибка -> {error}"
+        )
+        error_in_cmd = re.search(regex, result)
+        if error_in_cmd:
+            message = template.format(
+                cmd=command, device=self.ip, error=error_in_cmd.group("err")
+            )
+            if strict:
+                raise ValueError(message)
+            else:
+                print(message)
+
+    def send_show_command(self, command, parse=True, templates="templates"):
+        self._write_line(command)
+        time.sleep(1)
+        command_output = self.telnet.read_very_eager().decode("ascii")
+        if not parse:
+            return command_output
+        attributes = {"Command": command, "Vendor": "cisco_ios"}
+        cli = clitable.CliTable("index", templates)
+        cli.ParseCmd(command_output, attributes)
+        return [dict(zip(cli.header, row)) for row in cli]
+
+    def send_config_commands(self, commands, strict=True):
+        cnfg_output = ''
+        if type(commands) == str:
+            commands = [commands]
+        self._write_line('conf t') # явно открыть конфигурационный режим
+        for cmd in commands:
+            self._write_line(cmd) # отправить команду
+            time.sleep(1)
+            result = self.telnet.read_very_eager().decode('utf-8')  # stdout for single command
+            self._error_in_command (cmd,result,strict=strict)
+            cnfg_output += result  # compile single results
+        self._write_line('end')
+        return cnfg_output
+
+
+if __name__ == '__main__':
+    r1 = CiscoTelnet("172.16.100.129", "cisco", "cisco", "cisco")
+
+
+    # print(r1.send_show_command('sh ip interface brief'))
+    # print(r1.send_show_command("sh ip int br", parse=False))
+    print(r1.send_config_commands(['ip address 5.5.5.5 255.255.255.255']))
+
+
