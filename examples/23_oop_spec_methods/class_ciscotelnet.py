@@ -27,5 +27,5 @@ class CiscoTelnet:
 
 
 if __name__ == '__main__':
-    r1 = CiscoTelnet('192.168.100.1', 'cisco', 'cisco', 'cisco')
+    r1 = CiscoTelnet('172.16.100.130', 'cisco', 'cisco', 'cisco')
     print(r1.send_show_command('sh ip int br'))

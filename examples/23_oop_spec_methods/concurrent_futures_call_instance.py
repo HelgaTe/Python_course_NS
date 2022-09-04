@@ -28,7 +28,7 @@ class CiscoSSH:
         if not hasattr(self, 'ssh'):
             self.ssh = ConnectHandler(**self.device_dict)
             self.ssh.enable()
-        return {self.ssh.ip: self.send_show_command(command)}
+        return {self.ssh.host: self.send_show_command(command)}
 
     def __repr__(self):
         return 'CiscoSSH({})'.format(self.device_dict['ip'])

@@ -1,15 +1,15 @@
 - device_type: cisco_ios
-  ip: 192.168.100.1
+  ip: 172.16.100.129
   username: cisco
   password: cisco
   secret: cisco
 - device_type: cisco_ios
-  ip: 192.168.100.2
+  ip: 172.16.100.130
   username: cisco
   password: cisco
   secret: cisco
 - device_type: cisco_ios
-  ip: 192.168.100.3
+  ip: 172.16.100.131
   username: cisco
   password: cisco
   secret: cisco

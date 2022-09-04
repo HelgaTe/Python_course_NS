@@ -23,6 +23,10 @@ class CiscoSSH:
             self.ssh.send('terminal length 0\n')
         time.sleep(1)
         self.ssh.recv(1000)
+    '''
+    Для того чтобы класс поддерживал работу в менеджере контекста, 
+    надо добавить методы __enter__ и __exit__ :
+    '''
 
     def __enter__(self):
         print('Метод __enter__')
@@ -39,5 +43,5 @@ class CiscoSSH:
         return result
 
 
-with CiscoSSH('192.168.100.1', 'cisco', 'cisco', 'cisco') as r1:
+with CiscoSSH('172.16.100.130', 'cisco', 'cisco', 'cisco') as r1:
     print(r1.send_show_command('sh clock'))
