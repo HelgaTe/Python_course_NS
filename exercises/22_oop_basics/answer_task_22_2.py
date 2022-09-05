@@ -85,7 +85,7 @@ class CiscoTelnet:
 
 if __name__ == "__main__":
     r1_params = {
-        "ip": "192.168.100.1",
+        "ip": "172.16.100.129",
         "username": "cisco",
         "password": "cisco",
         "secret": "cisco",

@@ -33,46 +33,39 @@ In [12]: print(ip_list)
 """
 import ipaddress
 
-
 class IPAddress:
     def __init__(self, ipaddress):
-        ip, mask = ipaddress.split('/')
-        self.ip = self._correct_ip(ip)
-        self.mask = self._correct_mask(mask)
-        self.mask = int(mask)
-        self.ipaddress=ipaddress
+        ip, mask = ipaddress.split("/")
+        self._check_ip(ip)
+        self._check_mask(mask)
+        self.ip, self.mask = ip, int(mask)
 
-    def _correct_mask(self, mask):
-        if mask.isdigit() and int(mask) in range(8, 33):
+    def _check_ip(self, ip):
+        octets = ip.split(".")
+        correct_octets = [
+            octet for octet in octets if octet.isdigit() and 0 <= int(octet) <= 255
+        ]
+        if len(octets) == 4 and len(correct_octets) == 4:
             return True
         else:
-            raise ValueError('Incorrect mask')
+            raise ValueError("Incorrect IPv4 address")
 
-    def _correct_ip(self, ip):
-        octets = ip.split('.')
-        correct_octets = [oct for oct in octets if oct.isdigit() and int(oct) in range(226)]
-        if len(octets) == 4 and len(correct_octets) == 4:
-            return ','.join(correct_octets).replace(',', '.')
+    def _check_mask(self, mask):
+        if mask.isdigit() and 8 <= int(mask) <= 32:
+            return True
         else:
-            raise ValueError('Incorrect IPv4 address')
+            raise ValueError("Incorrect mask")
 
     def __str__(self):
-        return f'IP address {self.ipaddress}'
+        return f"IP address {self.ip}/{self.mask}"
 
     def __repr__(self):
-        return f"IPAddress('{self.ipaddress}')"
-
-
-
+        return f"IPAddress('{self.ip}/{self.mask}')"
 
 if __name__ == '__main__':
     ip1 = IPAddress('10.1.1.1/24')
-    ip2 = IPAddress('100.1.1.1/24')
     print(ip1)
-    print(ip2)
+    print(str(ip1))
     ip_list=[]
     ip_list.append(ip1)
-    ip_list.append(ip2)
     print(ip_list)
-
-
