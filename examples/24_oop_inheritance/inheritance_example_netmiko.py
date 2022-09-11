@@ -2,7 +2,7 @@ from netmiko.cisco.cisco_ios import CiscoIosBase
 
 device_params = {
     'device_type': 'cisco_ios',
-    'ip': '192.168.100.1',
+    'ip': '172.16.100.130',
     'username': 'cisco',
     'password': 'cisco',
     'secret': 'cisco'
@@ -13,7 +13,6 @@ device_params = {
 class MyNetmiko(CiscoIosBase):
     pass
 
-
 r1 = MyNetmiko(**device_params)
 print(r1.send_command('sh ip int br'))
 
@@ -21,7 +20,7 @@ print(r1.send_command('sh ip int br'))
 
 class MyNetmiko(CiscoIosBase):
     def say_hello(self):
-        print('Hello from', self.ip)
+        print('Hello from', self.host)
 
 
 r1 = MyNetmiko(**device_params)

@@ -79,6 +79,6 @@ class CiscoSSH(ConnectSSH):
         return result
 
 if __name__ == "__main__":
-    with CiscoSSH('192.168.100.1', 'cisco', 'cisco', 'cisco') as r1:
+    with CiscoSSH('172.16.100.130', 'cisco', 'cisco', 'cisco') as r1:
         print(r1.send_config_commands(['interface loopback 33',
                                        'ip address 3.3.3.3 255.255.255.255']))
