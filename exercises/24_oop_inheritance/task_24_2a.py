@@ -36,6 +36,7 @@ ErrorInCommand: При выполнении команды "sh ip br" на ус�
 from netmiko.cisco.cisco_ios import CiscoIosSSH
 import re
 
+
 class ErrorInCommand(Exception):
     """
     Исключение генерируется, если при выполнении команды на оборудовании,
@@ -49,18 +50,16 @@ class MyNetmiko(CiscoIosSSH):
             **kwargs)  # инициализировать все переменные родительского класса, которые переданы как ключевые аргументы
         self.enable()  # ssh >>> self (from parent class)
 
-    def send_command(self,command,**kwargs):
-        output=super().send_command(command,**kwargs)
-        self._check_error_in_command(command,output)
+    def send_command(self, command, **kwargs):
+        output = super().send_command(command, **kwargs)
+        self._check_error_in_command(command, output)
         return output
 
-
-
-    def _check_error_in_command(self,command,com_output):
+    def _check_error_in_command(self, command, com_output):
         if '%' in com_output:
-            error=re.search(r'%.+',com_output).group()
-            raise ErrorInCommand (f'При выполнении команды "{command}" на устройстве {self.host} возникла ошибка "{error}"')
-
+            error = re.search(r'%.+', com_output).group()
+            raise ErrorInCommand(
+                f'При выполнении команды "{command}" на устройстве {self.host} возникла ошибка "{error}"')
 
 
 if __name__ == '__main__':
