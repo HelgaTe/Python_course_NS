@@ -9,3 +9,5 @@ with open('dhcp_snooping_schema.sql', 'r') as f:
 print("Done")
 
 conn.close()
+
+

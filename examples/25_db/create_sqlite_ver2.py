@@ -11,13 +11,13 @@ with open('dhcp_snooping.txt') as data:
         if match:
             result.append(match.groups())
 
-conn = sqlite3.connect('dhcp_snooping.db')
+conn = sqlite3.connect('dhcp_snooping4.db') # create db (open if exits)
 
-print('Creating schema...')
-with open('dhcp_snooping_schema.sql', 'r') as f:
-    schema = f.read()
-    conn.executescript(schema)
-print('Done')
+# print('Creating schema...')
+# with open('dhcp_snooping_schema.sql', 'r') as f: # create table based on template (writen into file)
+#     schema = f.read()
+#     conn.executescript(schema) # executescript >>> выполнять команды SQL, которые прописаны в файле
+# print('Done')
 
 print('Inserting DHCP Snooping data')
 

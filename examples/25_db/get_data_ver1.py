@@ -2,7 +2,7 @@
 import sqlite3
 import sys
 
-db_filename = 'dhcp_snooping.db'
+db_filename = 'dhcp_snooping4.db'
 
 key, value = sys.argv[1:]
 keys = ['mac', 'ip', 'vlan', 'interface']
@@ -23,3 +23,5 @@ for row in result:
     for k in keys:
         print('{:12}: {}'.format(k, row[k]))
     print('-' * 40)
+
+# <python get_data_ver1.py vlan 5> terminal to get data from filename.db

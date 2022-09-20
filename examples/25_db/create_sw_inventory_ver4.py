@@ -39,7 +39,7 @@ def write_rows_to_db(connection, query, data, verbose=False):
                     ', '.join(row)))
 
 
-con = dbf.create_connection('sw_inventory3.db')
+con = dbf.create_connection('dhcp_snooping3.db')
 
 query_insert = 'INSERT into switch values (?, ?, ?, ?)'
 query_get_all = 'SELECT * from switch'

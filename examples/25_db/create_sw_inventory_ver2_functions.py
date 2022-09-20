@@ -54,8 +54,9 @@ def get_all_from_db(connection, query):
 
 
 if __name__ == '__main__':
-    con = create_connection('sw_inventory3.db')
-
+    con = sqlite3.connect('dhcp_snooping3.db')
+    # table was created by running <create_sw_inventory_ver2.py>, so the lines below are commented to avoid errors
+    # clear up database first <dhcp_snooping3.db> DROP table switch;>
     print('Создание таблицы...')
     schema = '''create table switch
                 (mac text primary key, hostname text, model text, location text)'''
@@ -67,6 +68,7 @@ if __name__ == '__main__':
     print('Запись данных в БД:')
     pprint(data)
     write_data_to_db(con, query_insert, data)
+    # write_row_to_db(con,query_insert,data)
     print('\nПроверка содержимого БД')
     pprint(get_all_from_db(con, query_get_all))
 
