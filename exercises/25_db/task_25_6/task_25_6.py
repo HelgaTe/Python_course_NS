@@ -11,7 +11,7 @@
 которые принимает файл.
 
 Есть поддержка аргументов для выполнения всех действий, которые,
-в предыдущих заданиях, выполнялись в файлах create_db.py, add_data.py и get_data.py.
+в предыдущих заданиях, выполнялись в файлах create_db.py, add_data_status.py и get_data.py.
 
 В файле parse_dhcp_snooping.py есть такая строка:
 import parse_dhcp_snooping_functions as pds
