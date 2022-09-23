@@ -1,15 +1,14 @@
-import glob
-from pprint import pprint
-import os
 import re
 import sqlite3
 import yaml
+from datetime import datetime, timedelta
 
 """
 when bd is created >>> add last_active column by the following command into terminal:
     dhcp_snooping.db> alter table dhcp add column 'last_active' 'datetime'
 and then you can add data into db by running add_data_status.py 
 """
+
 
 def add_data(connection, query, data):  # общая функция для записи данных в БД
     # connection - переменная, которая создается в нижестоящих функциях (add_dhcp_data & add_sw_data)
@@ -21,11 +20,12 @@ def add_data(connection, query, data):  # общая функция для за�
             print("При добавлении данных:", row, "Возникла ошибка:", err)
 
 
-def parse_dhcp_snoop(filename): # с помощью regex отобрать информацию для записи в бд
+def parse_dhcp_snoop(filename):  # с помощью regex отобрать информацию для записи в бд
     regex = re.compile("(\S+) +(\S+) +\d+ +\S+ +(\d+) +(\S+)")  # regex for <sw*_dhcp_snooping> file content
     sw = re.search("(\w+)_dhcp_snooping.txt", filename).group(1)  # получить номер switch из названия файла
     with open(filename) as f:
-        result = [match.groups() + (sw,) for match in regex.finditer(f.read())]  # прочитать содержимое файла и получить данные в виде кортежа
+        result = [match.groups() + (sw,) for match in
+                  regex.finditer(f.read())]  # прочитать содержимое файла и получить данные в виде кортежа
     return result
 
 
@@ -51,19 +51,27 @@ def add_sw_data(db_name, sw_data_file):  # записать данные о ко
     connection.close()
 
 
+def delete_old_data(db_name):
+    connection = sqlite3.connect(db_name)
+    now = datetime.today().replace(microsecond=0)
+    week_ago = str(now - timedelta(days=7))  # apply str type, because <last_active> type(data)=str
+    for row in connection.execute('select mac, last_active from dhcp'):
+        last_active = str(row[1]).strip() # date from dhcp has white space <' 2022-09-22 18:47:32'> >>> provoke failure
+        mac = str(row[0])
+        status = last_active < week_ago # True, False
+        query = 'delete from dhcp where mac = ?'
+        if status:
+            connection.execute(query, (mac,))
+        connection.commit()
+
+
 if __name__ == "__main__":
     db_filename = "dhcp_snooping.db"
-    sw_data = glob.glob('sw*_dhcp_snooping.txt')
-    sw_new_data = glob.glob('new_data/sw*_dhcp_snooping.txt')
-
-    add_dhcp_data(db_filename, sw_data)
-    add_dhcp_data(db_filename, sw_new_data)
-    add_sw_data(db_filename, "switches.yml")
-
-# проверка того, что данные с файлов в формате sw_new_data считывается
-# for i in sw_new_data:
-#     print(i)
-#     with open (i) as f:
-#         print(f.read())
-# for i in sw_data:
-#     pprint(parse_dhcp_snoop(i))
+    delete_old_data(db_filename)
+"""
+before def delete_old_data testing:
+- copy db from task 25_5
+- UPDATE dhcp set last_active = ' 2022-08-22 18:47:32' >>> change last_active date
+- UPDATE dhcp set last_active = ' 2022-09-22 18:47:32' where vlan = '10' >>>back changes for vlan 10
+upon running def delete_old_data >>> dhcp tab includes 4 rows (where vlan = 10)
+"""

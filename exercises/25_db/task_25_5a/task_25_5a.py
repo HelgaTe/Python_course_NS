@@ -29,4 +29,9 @@ week_ago = now - timedelta(days=7)
 # print(now)
 # print(week_ago)
 # print(now > week_ago)
-# print(str(now) > str(week_ago))
+# print(str(now) > str(week_ago)) # last_active contains type(data)=str
+# print(str(now) < str(week_ago)) # last_active contains type(data)=str
+
+date1 = ' 2022-09-22 18:47:32'
+date2 = '2022-09-16 12:13:05'
+print(date1<date2)

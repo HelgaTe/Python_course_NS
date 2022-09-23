@@ -78,7 +78,7 @@ def add_sw_data(db_name, sw_data_file): # записать данные о ко�
     print("Добавляю данные в таблицу switches...")
     query_switches = "insert into switches values (?,?)" # запрос для записи данных
     with open(sw_data_file) as f:
-        switches = yaml.safe_load(f) # считать файл - данные в виде сложенного словаря
+        switches = yaml.safe_load(f) # считать файл - данные в виде вложенного словаря
     sw_data = list(switches["switches"].items()) # получить данные в виде кортежа
     add_data(db_name, query_switches, sw_data) # записать данные из файла в БД
 
